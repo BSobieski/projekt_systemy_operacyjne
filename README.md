@@ -35,3 +35,31 @@ Uwaga: Podana wyżej kolejność uruchamiania programów jest konieczna do ich p
 
 #Opis implementacji
 
+Aby zzrealizować projekt początkowo trzeba wybrać 3 sygnały:
+-SIGTSTP
+-SIGALRM
+-SIGTERM
+
+Wybrane sygnały będą sterowały działaniem programu projekt_so.c poprzez wysyłanie ich przez użytkownika za pomocą programu sygnaly.c
+
+--projekt_so.c--
+
+Program na początku tworzy kolejkę komunikatów oraz tablicę semaforów która posłuży do synchronizacji dostępu do pamięci współdzielonej. Następnie wywoływane są funkcje maskujące sygnały oraz odblokowujące wybrane przez nas sygnały. Wybranym sygnałom oraz niektórym sygnałom używanym tylko wewnątrz programu zostaną przypisane poszczególne funkcje. Następnie program macierzysty zaczyna tworzyć procesy potomne.
+
+Proces pierwszy pobiera od użytkownika tryb pobierania znaków. Przy wyborze "Z klawiatury" program w nieskończonej pętli pobiera od użytkownika. Przy wyborze opcji "Z pliku" lub "Z /dev/urandom" do wcześniej utworzonego wskaźnika na plik zosaje przypisana ścieżka do pliku (za pomocą funkcji fopen("ścieżka", "r")). Niezależnie od wyboru sposobu wprowadzania znaki są pobierane do tablicy typu char o rozmiarze 30 a następnie przesyłane do procesu potomnego drugiego.
+
+Proces drugi odbiera wiadomość przesłaną przez proces potomny pierwszy. Nastepnie konwertuje znak do liczby ASCII w systemie szesnastkowym z dopełnieniem do 2 znaków. Po konwersji zapisuje wynik do pamięci współdzielonej i ustawia wartości semaforów tak, by proces potomny trzeci mógł odczytać wartość z pamięci współdzlonej.
+
+Proces trzeci odczytuje z pamięci współdzielonej znak w systemie szesnastkowym oraz zmienia wartości semaforów tak, by proces potomny drugi mógł wpisać kolejną wartość do pamięci współdzielonej. Następnie wyświetla pobrany znak na terminalu.
+
+Znaki są wyświetlane na ekranie po 15 znaków w linii oddzielonych spacjami. By zapewnić prawidłowe wyświetlanie znaków należało użyć sygnału SIGINIT który zostaje wysłany do procesu potomnego trzeciego za każdym razem, gdy użytkownik prześle kolejną porcję znaków przy trybie wprowadzania "Z klawiatury". Funkcja przypisana do tego sygnału powoduje zerowanie licznika znaków na wiersz.
+
+PID każdego z proesów zostaje zapisany w oddzielnej zmiennej. Nastepnie zostaje utworzony plik prekaz_pid.txt który zawiera PIDy wszystkich procesów programu.
+
+Każdy z procesów potomnych ma zaimplementowaną pentlę zależną od zmiennej sleeping. Za pomocą wysłania do któregokolwiek sygnału SIGTSTP można zatrzymywać działanie programu. By wznowić jego działanie treba wysłać do któregoś z procesów sygnał SIGALRM.
+
+Po odebraniu od któregokolwiek z procesów sygnału SIGTERM rozpoczyna się procedura sprzątania. Proces macierzysty "ubija" procesy potomne, następnie usuwa kolejkę komunikatów, semafory oraz plik przekaz_pid.txt. Następnie proces macierzysty kończy swoje działanie.
+
+--sygnaly.c--
+
+Program ten na początku odczytuje z pliku przekaz_pid.txt adresy procesów utworzonych przez program głowny projekt_so.c. Następnie użytkownik może do woli wybierać jaki sygnał chce przesłąć i do którego procesu.
