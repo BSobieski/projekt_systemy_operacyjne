@@ -16,6 +16,7 @@ Każdy z sygnałów przekazywany jest przez operatora tylko do jednego, dowolneg
 Sygnały oznaczone w opisie zadania symbolami S1 ÷ S3 należy wybrać samodzielnie spośród dostępnych w systemie (np. SIGUSR1, SIGUSR2, SIGINT, SIGCONT).
 
 Mechanizmy komunikacji:
+
 K1 - Kolejka komunikatów
 K2 - Pamięć współdzielona
 
