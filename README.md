@@ -28,3 +28,10 @@ w trybie odczytu danych z pliku /dev/urandom.
 Dodatkowo wysyłanie sygnałów do procesów powinno odbywać się z wykorzystaniem dodatkowego programu napisanego w języku C. Program ten powinien umożliwiać (przy pomocy menu użytkownika) wybór sygnału oraz procesu do którego ten sygnał ma zostać wysłany.
 
 #Opis uruchomienia
+
+Aby uruchomić program należy na systemie Linuź uruchomić dwa terminale w ym samym folderze co pliki projektu. W pierwszym terminalu należy użyć komendy ./run1.sh by skompilować i uruchomić program główny projekt_so.c. Następnie w drugim terminalu należy użyć komendy ./run2.s by skompilować i uruchomić program do obsługi sygnałów sygnalu.c.
+
+Uwaga: Podana wyżej kolejność uruchamiania programów jest konieczna do ich poprawnego działania.
+
+#Opis implementacji
+
