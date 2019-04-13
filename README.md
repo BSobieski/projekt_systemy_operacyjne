@@ -1,6 +1,7 @@
 ###README###
 
 #Założenia
+
 Opracować na systemie Linux zestaw programów typu producent - konsument realizujących następujący schemat synchronicznej komunikacji międzyprocesowej:
 Proces 1:	czyta dane ze standardowego strumienia wejściowego i przekazuje je w niezmienionej formie do procesu 2 poprzez mechanizm komunikacyjny K1.
 Proces 2: 	pobiera dane przesłane przez proces 1. Konwertuje dane otrzymane z procesu 1 do postaci heksadecymalnej i przekazuje do procesu 3 poprzez mechanizm komunikacyjny K2.
