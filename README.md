@@ -1,6 +1,6 @@
 # README
 
-# Założenia
+## Założenia
 
 Opracować na systemie Linux zestaw programów typu producent - konsument realizujących następujący schemat synchronicznej komunikacji międzyprocesowej:
 Proces 1:	czyta dane ze standardowego strumienia wejściowego i przekazuje je w niezmienionej formie do procesu 2 poprzez mechanizm komunikacyjny K1.
@@ -27,13 +27,13 @@ Program ma umożliwiać uruchomienie:
 
 Dodatkowo wysyłanie sygnałów do procesów powinno odbywać się z wykorzystaniem dodatkowego programu napisanego w języku C. Program ten powinien umożliwiać (przy pomocy menu użytkownika) wybór sygnału oraz procesu do którego ten sygnał ma zostać wysłany.
 
-# Opis uruchomienia
+## Opis uruchomienia
 
 Aby uruchomić program należy na systemie Linuź uruchomić dwa terminale w ym samym folderze co pliki projektu. W pierwszym terminalu należy użyć komendy ./run1.sh by skompilować i uruchomić program główny projekt_so.c. Następnie w drugim terminalu należy użyć komendy ./run2.s by skompilować i uruchomić program do obsługi sygnałów sygnalu.c.
 
 Uwaga: Podana wyżej kolejność uruchamiania programów jest konieczna do ich poprawnego działania.
 
-# Opis implementacji
+## Opis implementacji
 
 Aby zzrealizować projekt początkowo trzeba wybrać 3 sygnały:
 * SIGTSTP
@@ -42,7 +42,7 @@ Aby zzrealizować projekt początkowo trzeba wybrać 3 sygnały:
 
 Wybrane sygnały będą sterowały działaniem programu projekt_so.c poprzez wysyłanie ich przez użytkownika za pomocą programu sygnaly.c
 
-**projekt_so.c**
+##### projekt_so.c
 
 Program na początku tworzy kolejkę komunikatów oraz tablicę semaforów która posłuży do synchronizacji dostępu do pamięci współdzielonej. Następnie wywoływane są funkcje maskujące sygnały oraz odblokowujące wybrane przez nas sygnały. Wybranym sygnałom oraz niektórym sygnałom używanym tylko wewnątrz programu zostaną przypisane poszczególne funkcje. Następnie program macierzysty zaczyna tworzyć procesy potomne.
 
@@ -60,6 +60,6 @@ Każdy z procesów potomnych ma zaimplementowaną pentlę zależną od zmiennej 
 
 Po odebraniu od któregokolwiek z procesów sygnału SIGTERM rozpoczyna się procedura sprzątania. Proces macierzysty "ubija" procesy potomne, następnie usuwa kolejkę komunikatów, semafory oraz plik przekaz_pid.txt. Następnie proces macierzysty kończy swoje działanie.
 
-**sygnaly.c**
+##### sygnaly.c
 
 Program ten na początku odczytuje z pliku przekaz_pid.txt adresy procesów utworzonych przez program głowny projekt_so.c. Następnie użytkownik może do woli wybierać jaki sygnał chce przesłąć i do którego procesu.
