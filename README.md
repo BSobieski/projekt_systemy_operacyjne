@@ -35,7 +35,7 @@ Uwaga: Podana wyżej kolejność uruchamiania programów jest konieczna do ich p
 
 ## Opis implementacji
 
-Aby zzrealizować projekt początkowo trzeba wybrać 3 sygnały:
+Aby zrealizować projekt początkowo trzeba wybrać 3 sygnały:
 * SIGTSTP
 * SIGALRM
 * SIGTERM
